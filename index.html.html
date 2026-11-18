@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VOCABULARY STUDY TABLE – Kiểm tra từ vựng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#7a0c1e;--red2:#a3122b;--pink:#f7c9d4;--pink2:#fde9ee;--pink3:#fbd9e1;--white:#fff;--ink:#3a0a14;--muted:#8a5a64;--ok:#1f7a4a;--okbg:#e3f5ea}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--pink2);color:var(--ink);min-height:100vh}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+header.top{background:var(--red);color:#fff;padding:18px 20px;border-radius:0 0 22px 22px;box-shadow:0 6px 18px rgba(122,12,30,.25)}
+header.top h1{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}
+header.top p{margin:4px 0 0;font-size:13px;opacity:.85}
+.card{background:var(--white);border-radius:18px;padding:20px;margin-top:16px;box-shadow:0 2px 10px rgba(122,12,30,.08);border:1px solid var(--pink3)}
+label.lbl{display:block;font-weight:600;font-size:14px;margin-bottom:6px;color:var(--red)}
+input[type=text],input[type=number]{width:100%;padding:12px 14px;border:2px solid var(--pink);border-radius:12px;font:inherit;font-size:16px;background:#fff;color:var(--ink);outline:none}
+input:focus{border-color:var(--red2)}
+.row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px dashed var(--pink)}
+.row:first-of-type{border-top:none}
+.row .t{flex:1;font-size:15px;font-weight:500}
+.row .t small{display:block;color:var(--muted);font-weight:400;font-size:12.5px}
+.row input[type=number]{width:84px;padding:8px 10px;text-align:center}
+.sw{position:relative;width:48px;height:28px;flex:none}
+.sw input{opacity:0;width:0;height:0}
+.sw span{position:absolute;inset:0;background:#e9d3d8;border-radius:20px;cursor:pointer;transition:.2s}
+.sw span:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked+span{background:var(--red)}
+.sw input:checked+span:before{transform:translateX(20px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:14px;padding:13px 18px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:.15s}
+.btn.primary{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(122,12,30,.3)}
+.btn.primary:hover{background:var(--red2)}
+.btn.ghost{background:var(--pink2);color:var(--red);border:2px solid var(--pink)}
+.btn.ghost:hover{background:var(--pink3)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btns .btn{flex:1;min-width:150px}
+.setinfo{margin-top:14px;padding:12px 14px;background:var(--pink2);border-radius:12px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.setinfo b{color:var(--red)}
+.err{color:var(--red2);font-size:13px;margin-top:6px;min-height:18px}
+details summary{cursor:pointer;font-weight:600;color:var(--red);font-size:14px;margin-top:6px}
+.grp{display:grid;grid-template-columns:1fr 84px;gap:8px 12px;align-items:center;margin-top:10px;font-size:14px}
+.grp small{color:var(--muted)}
+/* quiz */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat{background:#fff;border-radius:14px;padding:10px 8px;text-align:center;border:1px solid var(--pink3)}
+.stat .k{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.stat .v{font-size:20px;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums}
+.stat.warn .v{color:#d0103a}
+.who{margin-top:14px;font-size:14px;color:var(--muted)}
+.who b{color:var(--red)}
+.bar{height:8px;background:var(--pink3);border-radius:8px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;background:var(--red);transition:width .3s}
+.q{text-align:center;padding:26px 18px}
+.q .num{font-size:13px;font-weight:700;color:var(--red2);letter-spacing:.5px}
+.q .vi{font-size:23px;font-weight:700;margin:12px 0 6px;line-height:1.35}
+.q .pos{display:inline-block;font-size:12.5px;background:var(--pink2);color:var(--red);padding:3px 10px;border-radius:20px;font-weight:600}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{width:100%;text-align:left;background:#fff;border:2px solid var(--pink);border-radius:14px;padding:15px 16px;font:inherit;font-size:17px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;gap:12px;align-items:center;transition:.12s}
+.opt .l{width:30px;height:30px;flex:none;border-radius:50%;background:var(--pink2);color:var(--red);display:grid;place-items:center;font-size:14px;font-weight:800}
+.opt.sel{border-color:var(--red);background:var(--red);color:#fff}
+.opt.sel .l{background:#fff;color:var(--red)}
+.opt:disabled{cursor:default}
+/* result */
+.score{text-align:center;padding:26px 20px;background:var(--red);color:#fff;border:none}
+.score .big{font-size:64px;font-weight:800;line-height:1}
+.score .big small{font-size:24px;opacity:.75}
+.score .why{margin-top:8px;font-size:14px;opacity:.9}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rgrid .stat .v{font-size:18px}
+.rgrid .stat.full{grid-column:1/-1}
+.review{list-style:none;padding:0;margin:0}
+.review li{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--pink3);font-size:14.5px;align-items:flex-start}
+.review li:first-child{border-top:none}
+.review .mk{width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff}
+.mk.y{background:var(--ok)}.mk.n{background:#d0103a}.mk.s{background:#bba0a6}
+.review .w{font-weight:700;color:var(--red)}
+.review .m{color:var(--muted);font-size:13px}
+.hist{font-size:13.5px}
+.hist table{width:100%;border-collapse:collapse}
+.hist th,.hist td{padding:7px 6px;border-bottom:1px solid var(--pink3);text-align:left}
+.hist th{color:var(--red);font-size:12px;text-transform:uppercase}
+.hidden{display:none!important}
+.face{position:fixed;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;z-index:20;pointer-events:none;opacity:0;transform:scale(.3)}
+.face.show{animation:pop .9s ease forwards}
+.face.angry.show{animation:pop .9s ease forwards,shake .35s ease .15s 2}
+@keyframes pop{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1.12)}40%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1)}}
+@keyframes shake{0%,100%{margin-left:-75px}25%{margin-left:-85px}75%{margin-left:-65px}}
+h2{margin:0 0 12px;font-size:17px;color:var(--red)}
+.modal{position:fixed;inset:0;background:rgba(58,10,20,.45);display:grid;place-items:center;padding:20px;z-index:10}
+.modal .card{max-width:380px;width:100%;text-align:center}
+
+.gtable{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+.gtable th{font-size:11.5px;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:center;padding:4px 2px}
+.gtable td{padding:6px 3px;text-align:center;border-top:1px dashed var(--pink)}
+.gtable td:first-child{text-align:left;font-weight:700;color:var(--red);white-space:nowrap}
+.gtable input[type=number]{width:62px;padding:8px 4px;text-align:center;font-size:15px}
+.gtable input[type=checkbox]{width:20px;height:20px;accent-color:var(--red)}
+.gtable .avail{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.x{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 6px}
+.small{font-size:13px;padding:9px 14px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.tbl{overflow-x:auto;margin-top:10px;border:1px solid var(--pink3);border-radius:12px}
+.tbl table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+.tbl th{background:var(--red);color:#fff;font-weight:600;padding:9px 8px;text-align:left;white-space:nowrap}
+.tbl td{padding:8px;border-top:1px solid var(--pink3);vertical-align:top}
+.tbl td{white-space:nowrap}.tbl td:last-child{white-space:normal;min-width:280px}.tbl table{min-width:0}
+.tbl tr:nth-child(even) td{background:var(--pink2)}
+.tbl td.num{text-align:center;font-variant-numeric:tabular-nums}
+.chk{display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:14px;padding:8px 0}
+.chk input{width:20px;height:20px;accent-color:var(--red);flex:none;margin-top:1px}
+.note{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;opacity:0;transition:.25s;pointer-events:none}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap" style="padding:0">
+<h1>VOCABULARY STUDY TABLE</h1>
+<p>Kiểm tra ghi nhớ từ vựng · 339 từ · Trắc nghiệm 3 phương án</p>
+</div></header>
+
+<div class="wrap">
+
+<!-- START -->
+<section id="start">
+<div class="card">
+<label class="lbl" for="name">Họ và tên học sinh</label>
+<input type="text" id="name" placeholder="Nhập họ tên..." autocomplete="off">
+<div class="err" id="nameErr"></div>
+</div>
+
+<div class="card">
+<h2>Số lượng câu và phạm vi từ</h2>
+<table class="gtable">
+<thead><tr><th></th><th>Số câu</th><th>Từ số</th><th>Đến số</th><th>Chỉ từ đơn</th><th></th></tr></thead>
+<tbody id="gBody"></tbody>
+</table>
+<button class="btn ghost small" id="addG" style="margin-top:10px">+ Thêm nhóm</button>
+<div class="setinfo" id="gTotal" style="margin-top:12px"></div>
+<div class="err" id="grpErr"></div>
+</div>
+
+<div class="card">
+<h2>Tuỳ chọn</h2>
+<div class="row">
+<div class="t">Giới hạn thời gian<small>Hết giờ bài tự nộp</small></div>
+<input type="number" id="timeMin" min="1" max="120" value="10"> <span style="font-size:13px;color:var(--muted)">phút</span>
+<label class="sw"><input type="checkbox" id="timeOn"><span></span></label>
+</div>
+<div class="row">
+<div class="t">Giới hạn số câu sai tối đa<small>Sai vượt mức này bài dừng ngay</small></div>
+<input type="number" id="wrongMax" min="0" max="50" value="5">
+<label class="sw"><input type="checkbox" id="wrongOn"><span></span></label>
+</div>
+</div>
+
+<div class="card">
+<h2>Bộ đề</h2>
+<div class="setinfo" id="setInfo"></div>
+<div class="btns">
+<button class="btn ghost" id="newSet">↻ Tạo set test mới</button>
+<button class="btn primary" id="go">Bắt đầu làm bài →</button>
+</div>
+</div>
+
+<div class="tools">
+<button class="btn ghost" id="openSum">Tổng hợp kết quả HS</button>
+<button class="btn ghost" id="openReset">Khởi tạo mới</button>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+<div class="who">Học sinh: <b id="qName"></b> · Bộ đề <b id="qSet"></b></div>
+<div class="stats">
+<div class="stat"><div class="k">Câu</div><div class="v" id="qPos">1/15</div></div>
+<div class="stat" id="timeStat"><div class="k" id="timeK">Thời gian</div><div class="v" id="qTime">00:00</div></div>
+<div class="stat" id="wrongStat"><div class="k">Số câu sai</div><div class="v" id="qWrong">0</div></div>
+</div>
+<div class="bar"><i id="qBar" style="width:0"></i></div>
+<div class="card q">
+<div class="num" id="qNum"></div>
+<div class="vi" id="qVi"></div>
+<span class="pos" id="qPosTag"></span>
+<div class="opts" id="opts"></div>
+</div>
+<div class="btns"><button class="btn ghost" id="quit">Nộp bài sớm</button></div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden">
+<div class="card score">
+<div style="font-size:14px;opacity:.85">Điểm số</div>
+<div class="big" id="rScore">0<small>/10</small></div>
+<div class="why" id="rWhy"></div>
+</div>
+<div class="card">
+<div class="rgrid">
+<div class="stat full"><div class="k">Họ tên học sinh</div><div class="v" id="rName"></div></div>
+<div class="stat"><div class="k">Thời gian hoàn thành</div><div class="v" id="rTime"></div></div>
+<div class="stat"><div class="k">Số câu sai</div><div class="v" id="rWrong"></div></div>
+<div class="stat"><div class="k">Số câu đúng</div><div class="v" id="rRight"></div></div>
+<div class="stat"><div class="k">Bộ đề</div><div class="v" id="rSet"></div></div>
+</div>
+<div class="note" id="rSync"></div>
+</div>
+<div class="card"><h2>Xem lại bài làm</h2><ul class="review" id="rList"></ul></div>
+<div class="btns">
+<button class="btn ghost" id="again">Làm lại bộ đề này</button>
+<button class="btn primary" id="home">Về trang đầu</button>
+</div>
+</section>
+
+<!-- SUMMARY -->
+<section id="summary" class="hidden">
+<div class="card">
+<h2>Tổng hợp kết quả học sinh</h2>
+<div class="setinfo" id="sumInfo">Đang tải…</div>
+<div class="btns">
+<button class="btn primary" id="dlCsv">Tải file Excel (.csv)</button>
+<button class="btn ghost" id="cpTbl">Sao chép bảng</button>
+</div>
+<div class="tbl" id="sumTbl"></div>
+<div class="note" id="sumNote"></div>
+</div>
+<div class="btns"><button class="btn primary" id="sumBack">← Về trang đầu</button></div>
+</section>
+</div>
+
+<div class="face" id="faceOk"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#ffd23f" stroke="#e0a800" stroke-width="3"/><ellipse cx="34" cy="40" rx="5" ry="7" fill="#3a0a14"/><ellipse cx="66" cy="40" rx="5" ry="7" fill="#3a0a14"/><circle cx="24" cy="58" r="7" fill="#ff8fa8" opacity=".7"/><circle cx="76" cy="58" r="7" fill="#ff8fa8" opacity=".7"/><path d="M28 58 Q50 84 72 58 Z" fill="#7a0c1e"/><path d="M38 70 Q50 78 62 70 Q50 74 38 70Z" fill="#ff8fa8"/></svg></div><div class="face angry" id="faceNo"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#e0243f" stroke="#7a0c1e" stroke-width="3"/><path d="M22 30 L44 40" stroke="#3a0a14" stroke-width="6" stroke-linecap="round"/><path d="M78 30 L56 40" stroke="#3a0a14" stroke-width="6" stroke-linecap="round"/><ellipse cx="35" cy="48" rx="5" ry="6" fill="#3a0a14"/><ellipse cx="65" cy="48" rx="5" ry="6" fill="#3a0a14"/><path d="M30 76 Q50 60 70 76" stroke="#3a0a14" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M80 14 l6 -8 M86 20 l9 -3 M83 17 l9 -9" stroke="#7a0c1e" stroke-width="3" stroke-linecap="round"/></svg></div>
+<div class="modal hidden" id="confirmBox"><div class="card">
+<h2>Nộp bài ngay?</h2>
+<p style="font-size:14px;color:var(--muted)">Các câu chưa làm sẽ được tính là sai.</p>
+<div class="btns"><button class="btn ghost" id="cNo">Làm tiếp</button><button class="btn primary" id="cYes">Nộp bài</button></div>
+</div></div>
+
+<div class="modal hidden" id="resetBox"><div class="card" style="max-width:420px">
+<h2>Khởi tạo mới</h2>
+<p style="font-size:13.5px;color:var(--muted);margin-top:0">Chọn những gì cần đặt lại:</p>
+<label class="chk"><input type="checkbox" id="rsSettings" checked><span>Cài đặt về mặc định (15 câu: 4 + 8 + 3, tắt giới hạn)</span></label>
+<label class="chk"><input type="checkbox" id="rsSets" checked><span>Xoá lịch sử bộ đề (đánh số lại từ #1)</span></label>
+<label class="chk"><input type="checkbox" id="rsLocal" checked><span>Xoá kết quả học sinh lưu trên máy này</span></label>
+<label class="chk hidden" id="rsDbWrap"><input type="checkbox" id="rsDb"><span>Xoá toàn bộ kết quả đã tổng hợp từ mọi máy (không khôi phục được)</span></label>
+<div class="btns"><button class="btn ghost" id="rsNo">Huỷ</button><button class="btn primary" id="rsYes">Khởi tạo</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const V=[{"n":1,"w":"autonomy","p":"n","c":"C1","vi":"sự tự chủ, quyền tự trị","single":true},{"n":2,"w":"bypass","p":"v","c":"B2","vi":"đi vòng qua, bỏ qua, né tránh (quy trình, quy định)","single":true},{"n":3,"w":"corrosive","p":"adj","c":"C1","vi":"ăn mòn (nghĩa đen); có tính hủy hoại, gây tổn hại (nghĩa bóng)","single":true},{"n":4,"w":"discharge","p":"v","c":"B2","vi":"xả, thải ra (chất lỏng/khí)","single":true},{"n":5,"w":"discrepancy","p":"n","c":"C1","vi":"sự khác biệt, chênh lệch (giữa số liệu, thông tin)","single":true},{"n":6,"w":"disorder","p":"n","c":"B2","vi":"sự rối loạn, mất trật tự","single":true},{"n":7,"w":"emerging","p":"adj","c":"B2","vi":"mới nổi, đang hình thành","single":true},{"n":8,"w":"endemic","p":"adj","c":"C1","vi":"đặc hữu, phổ biến/lưu hành ở một khu vực hoặc nhóm nhất định","single":true},{"n":9,"w":"erode","p":"v","c":"C1","vi":"xói mòn, bào mòn","single":true},{"n":10,"w":"hardship","p":"n","c":"B2","vi":"khó khăn, gian khổ, cơ cực","single":true},{"n":11,"w":"inform","p":"v","c":"A2","vi":"thông báo, cho biết","single":true},{"n":12,"w":"insufficient","p":"adj","c":"B2","vi":"không đủ, thiếu","single":true},{"n":13,"w":"outstanding","p":"adj","c":"B2","vi":"xuất sắc, nổi bật","single":true},{"n":14,"w":"plummet","p":"v","c":"C1","vi":"lao xuống, giảm mạnh (giá, số lượng)","single":true},{"n":15,"w":"severe","p":"adj","c":"B1","vi":"nghiêm trọng, khắc nghiệt, nghiêm khắc","single":true},{"n":16,"w":"squander","p":"v","c":"C1","vi":"phung phí, lãng phí (tiền bạc, cơ hội)","single":true},{"n":17,"w":"stable","p":"adj","c":"B1","vi":"ổn định, vững chắc","single":true},{"n":18,"w":"advocate","p":"n","c":"B2","vi":"người ủng hộ","single":true},{"n":19,"w":"commitment","p":"n","c":"B1","vi":"sự cam kết, tận tâm","single":true},{"n":20,"w":"encounter","p":"n","c":"B2","vi":"gặp gỡ, chạm trán (thường bất ngờ)","single":true},{"n":21,"w":"injustice","p":"n","c":"B2","vi":"sự bất công","single":true},{"n":22,"w":"instant","p":"adj","c":"B1","vi":"tức thì, ngay lập tức","single":true},{"n":23,"w":"involve","p":"v","c":"B1","vi":"liên quan; bao gồm; tham gia","single":true},{"n":24,"w":"obstacle","p":"n","c":"B1","vi":"trở ngại, chướng ngại vật","single":true},{"n":25,"w":"opposition","p":"n","c":"B1","vi":"sự phản đối, phe đối lập","single":true},{"n":26,"w":"perseverance","p":"n","c":"C1","vi":"sự kiên trì, bền bỉ","single":true},{"n":27,"w":"recipient","p":"n","c":"B2","vi":"người nhận","single":true},{"n":28,"w":"relentless","p":"adj","c":"C1","vi":"không ngừng nghỉ","single":true},{"n":29,"w":"renewed","p":"adj","c":"B2","vi":"được làm mới, phục hồi (tinh thần, sức mạnh)","single":true},{"n":30,"w":"speak out against","p":"v","c":"B2","vi":"lên tiếng phản đối, công khai chỉ trích","single":false},{"n":31,"w":"stand up for","p":"v","c":"B1","vi":"bênh vực, bảo vệ (quan điểm, ai đó)","single":false},{"n":32,"w":"stick with a goal","p":"phrase","c":"B2","vi":"bám sát/kiên trì theo đuổi mục tiêu","single":false},{"n":33,"w":"willingness","p":"n","c":"B1","vi":"sự sẵn lòng, thiện chí","single":true},{"n":34,"w":"capture attention","p":"v","c":"B1","vi":"thu hút sự chú ý","single":false},{"n":35,"w":"considerable","p":"adj","c":"B1","vi":"đáng kể","single":true},{"n":36,"w":"constant","p":"adj","c":"B1","vi":"liên tục, kiên định","single":true},{"n":37,"w":"countless","p":"adj","c":"B2","vi":"vô số","single":true},{"n":38,"w":"diplomatic","p":"adj","c":"B2","vi":"ngoại giao, khéo léo","single":true},{"n":39,"w":"entire","p":"adj","c":"B1","vi":"toàn bộ","single":true},{"n":40,"w":"expand","p":"v","c":"B1","vi":"mở rộng","single":true},{"n":41,"w":"figure","p":"n","c":"A2","vi":"nhân vật; con số","single":true},{"n":42,"w":"hands-on","p":"adj","c":"B2","vi":"thực hành, trực tiếp","single":true},{"n":43,"w":"legacy","p":"n","c":"B2","vi":"di sản","single":true},{"n":44,"w":"pay homage to","p":"v","c":"C1","vi":"tỏ lòng tôn kính","single":false},{"n":45,"w":"recognition","p":"n","c":"B1","vi":"sự công nhận","single":true},{"n":46,"w":"remarkable","p":"adj","c":"B1","vi":"đáng chú ý, phi thường","single":true},{"n":47,"w":"be sentenced to","p":"v","c":"B2","vi":"bị kết án","single":false},{"n":48,"w":"spirit","p":"n","c":"B1","vi":"tinh thần, ý chí","single":true},{"n":49,"w":"surrender","p":"v","c":"B1","vi":"đầu hàng, từ bỏ","single":true},{"n":50,"w":"tragic","p":"adj","c":"B1","vi":"bi thảm","single":true},{"n":51,"w":"untimely","p":"adj","c":"C1","vi":"không đúng lúc, quá sớm","single":true},{"n":52,"w":"unwavering","p":"adj","c":"C1","vi":"không lay chuyển","single":true},{"n":53,"w":"ancient","p":"adj","c":"A2","vi":"cổ đại, xưa cũ","single":true},{"n":54,"w":"approve","p":"v","c":"A2","vi":"chấp thuận, tán thành","single":true},{"n":55,"w":"compelling","p":"adj","c":"C1","vi":"thuyết phục, hấp dẫn, lôi cuốn","single":true},{"n":56,"w":"cutting-edge","p":"adj","c":"B2","vi":"tiên tiến, hiện đại nhất","single":true},{"n":57,"w":"desperate","p":"adj","c":"B1","vi":"tuyệt vọng, liều lĩnh (do cấp bách)","single":true},{"n":58,"w":"devastating","p":"adj","c":"B2","vi":"tàn khốc, gây tổn thất nặng nề","single":true},{"n":59,"w":"discrimination","p":"n","c":"B2","vi":"sự phân biệt đối xử","single":true},{"n":60,"w":"endure","p":"v","c":"B2","vi":"chịu đựng, bền bỉ tồn tại","single":true},{"n":61,"w":"enshrine","p":"v","c":"C1","vi":"ghi nhận, lưu giữ trang trọng (trong luật, hiến pháp, ký ức)","single":true},{"n":62,"w":"fragile","p":"adj","c":"B1","vi":"mong manh, dễ vỡ","single":true},{"n":63,"w":"frustration","p":"n","c":"B1","vi":"sự thất vọng, bực bội","single":true},{"n":64,"w":"genuine","p":"adj","c":"B1","vi":"chân thật, đích thực","single":true},{"n":65,"w":"govern","p":"v","c":"B1","vi":"cai trị, quản lý, chi phối","single":true},{"n":66,"w":"indigenous","p":"adj","c":"C1","vi":"bản địa, bản xứ","single":true},{"n":67,"w":"inevitable","p":"adj","c":"B2","vi":"không thể tránh khỏi, tất yếu","single":true},{"n":68,"w":"pioneer","p":"n","c":"B2","vi":"người tiên phong, người mở đường","single":true},{"n":69,"w":"profound","p":"adj","c":"B2","vi":"sâu sắc, sâu rộng","single":true},{"n":70,"w":"testament","p":"n","c":"C1","vi":"minh chứng, bằng chứng","single":true},{"n":71,"w":"worsen","p":"v","c":"B1","vi":"trở nên tồi tệ hơn, làm xấu đi","single":true},{"n":72,"w":"breakthrough","p":"n","c":"B2","vi":"bước đột phá","single":true},{"n":73,"w":"clarity","p":"n","c":"B2","vi":"sự rõ ràng","single":true},{"n":74,"w":"condemn","p":"v","c":"B2","vi":"lên án","single":true},{"n":75,"w":"confront","p":"v","c":"B2","vi":"đối mặt, đương đầu","single":true},{"n":76,"w":"constraint","p":"n","c":"B2","vi":"sự ràng buộc, hạn chế","single":true},{"n":77,"w":"controversy","p":"n","c":"B2","vi":"sự tranh cãi","single":true},{"n":78,"w":"decline","p":"v","c":"B1","vi":"suy giảm; từ chối","single":true},{"n":79,"w":"defy","p":"v","c":"B2","vi":"thách thức, bất chấp","single":true},{"n":80,"w":"deliver aid","p":"v","c":"B1","vi":"chuyển/cung cấp viện trợ","single":false},{"n":81,"w":"distraction","p":"n","c":"B1","vi":"sự xao lãng","single":true},{"n":82,"w":"evolving","p":"adj","c":"B2","vi":"đang phát triển, tiến hóa","single":true},{"n":83,"w":"excessive","p":"adj","c":"B2","vi":"quá mức, thái quá","single":true},{"n":84,"w":"filled with","p":"phrase","c":"A2","vi":"tràn đầy, chứa đầy","single":false},{"n":85,"w":"groundbreaking","p":"adj","c":"C1","vi":"đột phá, mang tính cách mạng","single":true},{"n":86,"w":"harmony","p":"n","c":"B1","vi":"sự hòa hợp","single":true},{"n":87,"w":"humility","p":"n","c":"C1","vi":"sự khiêm tốn","single":true},{"n":88,"w":"intervene","p":"v","c":"B2","vi":"can thiệp","single":true},{"n":89,"w":"leave a mark","p":"v","c":"B2","vi":"để lại dấu ấn","single":false},{"n":90,"w":"make headlines","p":"phrase","c":"B2","vi":"gây xôn xao báo chí, trở thành tin nổi bật","single":false},{"n":91,"w":"make it into schoolbooks","p":"phrase","c":"B2","vi":"được đưa vào sách giáo khoa","single":false},{"n":92,"w":"marginalized","p":"adj","c":"C1","vi":"bị gạt ra ngoài lề, bị thiệt thòi","single":true},{"n":93,"w":"permanent","p":"adj","c":"A2","vi":"vĩnh viễn, lâu dài","single":true},{"n":94,"w":"proper","p":"adj","c":"A2","vi":"đúng đắn, phù hợp, thích hợp","single":true},{"n":95,"w":"reconciliation","p":"n","c":"C1","vi":"sự hòa giải","single":true},{"n":96,"w":"align with","p":"v","c":"B2","vi":"phù hợp, đồng nhất với","single":false},{"n":97,"w":"count on","p":"v","c":"B1","vi":"trông cậy, tin tưởng vào","single":false},{"n":98,"w":"follow in the footsteps of","p":"v","c":"B2","vi":"noi gương, đi theo con đường của ai đó","single":false},{"n":99,"w":"intricate","p":"adj","c":"C1","vi":"phức tạp, tinh vi","single":true},{"n":100,"w":"morale","p":"n","c":"B2","vi":"tinh thần, sĩ khí","single":true},{"n":101,"w":"notable","p":"adj","c":"B2","vi":"đáng chú ý","single":true},{"n":102,"w":"on cloud nine","p":"phrase","c":"B2","vi":"cực kỳ hạnh phúc, vui sướng tột độ","single":false},{"n":103,"w":"overwhelmed","p":"adj","c":"B2","vi":"choáng ngợp, quá tải","single":true},{"n":104,"w":"precise","p":"adj","c":"B1","vi":"chính xác, chuẩn xác","single":true},{"n":105,"w":"purchase","p":"n","c":"B1","vi":"sự mua sắm, hàng mua","single":true},{"n":106,"w":"relevant","p":"adj","c":"B1","vi":"liên quan, thích đáng","single":true},{"n":107,"w":"reveal","p":"v","c":"B1","vi":"tiết lộ, bộc lộ","single":true},{"n":108,"w":"revenge","p":"n","c":"B1","vi":"sự trả thù","single":true},{"n":109,"w":"ridicule","p":"v","c":"B2","vi":"chế giễu","single":true},{"n":110,"w":"ripple into","p":"v","c":"B2","vi":"lan tỏa, ảnh hưởng lan rộng đến","single":false},{"n":111,"w":"sacrifice","p":"n","c":"B1","vi":"sự hy sinh","single":true},{"n":112,"w":"stereotype","p":"n","c":"B2","vi":"định kiến, khuôn mẫu","single":true},{"n":113,"w":"straightforward","p":"adj","c":"B1","vi":"đơn giản, rõ ràng, dễ hiểu","single":true},{"n":114,"w":"suffrage","p":"n","c":"C1","vi":"quyền bầu cử","single":true},{"n":115,"w":"traced back to","p":"v","c":"B2","vi":"có nguồn gốc từ, bắt nguồn từ","single":false},{"n":116,"w":"transcend","p":"v","c":"C1","vi":"vượt qua, siêu việt","single":true},{"n":117,"w":"tribute","p":"n","c":"B2","vi":"sự tôn vinh, sự kính trọng","single":true},{"n":118,"w":"untold","p":"adj","c":"C1","vi":"không kể xiết, không thể đo đếm","single":true},{"n":119,"w":"consistency","p":"n","c":"B2","vi":"tính nhất quán","single":true},{"n":120,"w":"fleeting","p":"adj","c":"C1","vi":"thoáng qua, phù du","single":true},{"n":121,"w":"unprecedented","p":"adj","c":"C1","vi":"chưa từng có","single":true},{"n":122,"w":"instinctive","p":"adj","c":"C1","vi":"theo bản năng, tự nhiên","single":true},{"n":123,"w":"grasp","p":"v","c":"B1","vi":"nắm bắt, hiểu; nắm chặt","single":true},{"n":124,"w":"incident","p":"n","c":"B1","vi":"sự việc, sự cố","single":true},{"n":125,"w":"alter","p":"v","c":"B1","vi":"thay đổi, sửa đổi","single":true},{"n":126,"w":"transmit","p":"v","c":"B1","vi":"truyền, phát, lan truyền","single":true},{"n":127,"w":"prior","p":"adj","c":"B1","vi":"trước đó","single":true},{"n":128,"w":"guarantee","p":"adj","c":"B1","vi":"chắc chắn, được bảo đảm","single":true},{"n":129,"w":"impaired","p":"adj","c":"B2","vi":"bị suy giảm, khiếm khuyết","single":true},{"n":130,"w":"combine with","p":"v","c":"B1","vi":"kết hợp với","single":false},{"n":131,"w":"forefront","p":"n","c":"C1","vi":"vị trí hàng đầu, tiên phong","single":true},{"n":132,"w":"initial","p":"adj","c":"A2","vi":"ban đầu","single":true},{"n":133,"w":"refine","p":"v","c":"B2","vi":"hoàn thiện, tinh chỉnh","single":true},{"n":134,"w":"enhance","p":"v","c":"B1","vi":"nâng cao, cải thiện","single":true},{"n":135,"w":"setback","p":"n","c":"B1","vi":"trở ngại, thất bại tạm thời","single":true},{"n":136,"w":"associate with","p":"v","c":"B1","vi":"liên tưởng, kết giao với","single":false},{"n":137,"w":"commit to","p":"v","c":"B1","vi":"cam kết với","single":false},{"n":138,"w":"account for","p":"phrase","c":"B2","vi":"giải thích; chiếm (tỷ lệ)","single":false},{"n":139,"w":"complement","p":"v","c":"C1","vi":"bổ sung, làm hoàn thiện","single":true},{"n":140,"w":"contaminated","p":"adj","c":"C1","vi":"bị ô nhiễm, nhiễm bẩn","single":true},{"n":141,"w":"curb","p":"v","c":"C1","vi":"kiềm chế, hạn chế","single":true},{"n":142,"w":"deposit","p":"n","c":"B2","vi":"lớp cặn, trầm tích; tiền đặt cọc","single":true},{"n":143,"w":"drastic","p":"adj","c":"C1","vi":"quyết liệt, mạnh mẽ","single":true},{"n":144,"w":"fed up with","p":"phrase","c":"B2","vi":"chán ngấy, phát ngán với","single":false},{"n":145,"w":"get rid of","p":"phrase","c":"B1","vi":"loại bỏ, vứt bỏ","single":false},{"n":146,"w":"imperative","p":"adj","c":"C1","vi":"cấp thiết, bắt buộc","single":true},{"n":147,"w":"leftover","p":"adj","c":"B2","vi":"còn thừa, dư lại","single":true},{"n":148,"w":"measurable","p":"adj","c":"B2","vi":"đo lường được","single":true},{"n":149,"w":"mitigate","p":"v","c":"C1","vi":"giảm nhẹ, làm dịu bớt","single":true},{"n":150,"w":"municipal","p":"adj","c":"C1","vi":"thuộc thành phố, thuộc đô thị","single":true},{"n":151,"w":"optimize","p":"v","c":"C1","vi":"tối ưu hóa","single":true},{"n":152,"w":"plummet","p":"v","c":"C1","vi":"lao xuống, giảm mạnh","single":true},{"n":153,"w":"privilege","p":"n","c":"B2","vi":"đặc quyền, đặc ân","single":true},{"n":154,"w":"refuse","p":"n","c":"C1","vi":"rác thải","single":true},{"n":155,"w":"residue","p":"n","c":"C1","vi":"cặn, phần còn lại","single":true},{"n":156,"w":"reusable","p":"adj","c":"B2","vi":"có thể tái sử dụng","single":true},{"n":157,"w":"soar","p":"v","c":"C1","vi":"tăng vọt, bay vút","single":true},{"n":158,"w":"sustainable","p":"adj","c":"B2","vi":"bền vững","single":true},{"n":159,"w":"switch to","p":"phrase","c":"B1","vi":"chuyển sang, đổi sang","single":false},{"n":160,"w":"transparent","p":"adj","c":"B2","vi":"một cách minh bạch","single":true},{"n":161,"w":"utilize","p":"v","c":"C1","vi":"tận dụng, sử dụng","single":true},{"n":162,"w":"verification","p":"n","c":"C1","vi":"sự xác minh, kiểm chứng","single":true},{"n":163,"w":"accelerate","p":"v","c":"B2","vi":"tăng tốc, thúc đẩy","single":true},{"n":164,"w":"carbon offset","p":"phrase","c":"C1","vi":"bù đắp carbon, tín chỉ bù trừ carbon","single":false},{"n":165,"w":"carbon-neutral","p":"","c":"C1","vi":"trung hòa carbon","single":true},{"n":166,"w":"clutter","p":"n","c":"B2","vi":"sự bừa bộn, đồ đạc lộn xộn","single":true},{"n":167,"w":"cornerstone","p":"n","c":"C1","vi":"nền tảng, viên đá tảng","single":true},{"n":168,"w":"criteria","p":"n","c":"B2","vi":"các tiêu chí","single":true},{"n":169,"w":"decay","p":"v","c":"B2","vi":"mục nát, phân rã, suy tàn","single":true},{"n":170,"w":"decompose","p":"v","c":"C1","vi":"phân hủy","single":true},{"n":171,"w":"degrade","p":"v","c":"C1","vi":"phân hủy; làm suy thoái","single":true},{"n":172,"w":"depletion","p":"n","c":"C1","vi":"sự cạn kiệt","single":true},{"n":173,"w":"diminish","p":"v","c":"C1","vi":"giảm bớt, suy giảm","single":true},{"n":174,"w":"disposable","p":"adj","c":"B2","vi":"dùng một lần, bỏ đi sau khi dùng","single":true},{"n":175,"w":"ecological footprint","p":"phrase","c":"B2","vi":"tác động của con người lên hệ sinh thái","single":false},{"n":176,"w":"enterprise","p":"n","c":"C1","vi":"doanh nghiệp; tinh thần dám nghĩ dám làm","single":true},{"n":177,"w":"microplastics","p":"n","c":"C1","vi":"vi nhựa, hạt nhựa siêu nhỏ","single":true},{"n":178,"w":"negligible","p":"adj","c":"C1","vi":"không đáng kể","single":true},{"n":179,"w":"operational overheads","p":"phrase","c":"C1","vi":"chi phí vận hành chung (chi phí cố định)","single":false},{"n":180,"w":"pioneer","p":"v","c":"B2","vi":"tiên phong, đi đầu phát triển","single":true},{"n":181,"w":"shrink","p":"v","c":"B2","vi":"co lại, thu hẹp","single":true},{"n":182,"w":"stimulate","p":"v","c":"B2","vi":"kích thích, khuyến khích","single":true},{"n":183,"w":"tailored for","p":"phrase","c":"B2","vi":"được thiết kế riêng cho","single":false},{"n":184,"w":"viable","p":"adj","c":"C1","vi":"khả thi","single":true},{"n":185,"w":"bolster","p":"v","c":"C1","vi":"củng cố, tăng cường","single":true},{"n":186,"w":"conscious","p":"adj","c":"B2","vi":"có ý thức, ý thức được","single":true},{"n":187,"w":"cultivate","p":"v","c":"C1","vi":"trau dồi, nuôi dưỡng; canh tác","single":true},{"n":188,"w":"deliberate","p":"adj","c":"B2","vi":"cố ý, có chủ đích","single":true},{"n":189,"w":"dimension","p":"n","c":"B2","vi":"khía cạnh; kích thước","single":true},{"n":190,"w":"end up","p":"phrase","c":"B1","vi":"cuối cùng rơi vào, kết cục là","single":false},{"n":191,"w":"enforce","p":"v","c":"B2","vi":"thực thi, buộc phải tuân thủ","single":true},{"n":192,"w":"erratic","p":"adj","c":"C1","vi":"thất thường, không ổn định","single":true},{"n":193,"w":"exclusive","p":"adj","c":"B2","vi":"độc quyền, dành riêng","single":true},{"n":194,"w":"force","p":"v","c":"B1","vi":"ép buộc, bắt buộc","single":true},{"n":195,"w":"hazardous pollution","p":"phrase","c":"C1","vi":"ô nhiễm nguy hại","single":false},{"n":196,"w":"hurdle","p":"n","c":"B2","vi":"rào cản, trở ngại","single":true},{"n":197,"w":"immense","p":"adj","c":"B2","vi":"bao la, to lớn","single":true},{"n":198,"w":"indisputable","p":"adj","c":"C1","vi":"không thể chối cãi","single":true},{"n":199,"w":"informed","p":"adj","c":"B2","vi":"có hiểu biết, được cung cấp thông tin","single":true},{"n":200,"w":"living expenditures","p":"phrase","c":"C1","vi":"chi phí sinh hoạt","single":false},{"n":201,"w":"modification","p":"n","c":"C1","vi":"sự sửa đổi, điều chỉnh","single":true},{"n":202,"w":"overshadow","p":"v","c":"C1","vi":"làm lu mờ, che khuất","single":true},{"n":203,"w":"synthetic","p":"adj","c":"C1","vi":"tổng hợp, nhân tạo","single":true},{"n":204,"w":"universal","p":"adj","c":"B2","vi":"phổ quát, chung cho tất cả mọi người","single":true},{"n":205,"w":"upfront","p":"adj","c":"C1","vi":"trả trước; thẳng thắn, rõ ràng","single":true},{"n":206,"w":"shelter","p":"n","c":"B2","vi":"nơi trú ẩn; chỗ ở","single":true},{"n":207,"w":"direct","p":"v","c":"B1","vi":"chỉ đạo, điều hướng, hướng dẫn","single":true},{"n":208,"w":"implication","p":"n","c":"C1","vi":"hàm ý; tác động, hệ quả","single":true},{"n":209,"w":"up and down","p":"adj","c":"B2","vi":"lên xuống thất thường","single":false},{"n":210,"w":"stretch","p":"v","c":"B2","vi":"kéo giãn, trải dài; làm quá sức","single":true},{"n":211,"w":"component","p":"n","c":"B2","vi":"thành phần, bộ phận","single":true},{"n":212,"w":"irreversible","p":"adj","c":"C1","vi":"không thể đảo ngược","single":true},{"n":213,"w":"elusive","p":"adj","c":"C2","vi":"khó nắm bắt, khó đạt được","single":true},{"n":214,"w":"yield","p":"v","c":"C1","vi":"mang lại, sinh lợi; nhượng bộ","single":true},{"n":215,"w":"deter","p":"v","c":"C1","vi":"ngăn cản, răn đe","single":true},{"n":216,"w":"tie to","p":"v","c":"B2","vi":"gắn với, liên kết với","single":false},{"n":217,"w":"expense","p":"n","c":"B1","vi":"chi phí, khoản chi","single":true},{"n":218,"w":"suppliers of material","p":"phrase","c":"B2","vi":"nhà cung cấp nguyên vật liệu","single":false},{"n":219,"w":"self-sustaining economy","p":"phrase","c":"C1","vi":"nền kinh tế tự duy trì","single":false},{"n":220,"w":"self-sustaining","p":"adj","c":"C2","vi":"tự duy trì","single":true},{"n":221,"w":"the proportion of inhabitant","p":"phrase","c":"B2","vi":"tỷ lệ cư dân","single":false},{"n":222,"w":"proportion","p":"n","c":"B2","vi":"tỷ lệ, phần","single":true},{"n":223,"w":"inhabitant","p":"n","c":"B2","vi":"cư dân","single":true},{"n":224,"w":"logistics network","p":"phrase","c":"C1","vi":"mạng lưới hậu cần","single":false},{"n":225,"w":"logistics","p":"n","c":"C1","vi":"hậu cần","single":true},{"n":226,"w":"peripheral region","p":"phrase","c":"C1","vi":"vùng ngoại vi","single":false},{"n":227,"w":"peripheral","p":"adj","c":"C1","vi":"ngoại vi, thứ yếu","single":true},{"n":228,"w":"concrete step","p":"phrase","c":"B2","vi":"bước đi cụ thể","single":false},{"n":229,"w":"concrete","p":"adj","c":"B2","vi":"cụ thể, thực tế","single":true},{"n":230,"w":"specialised agency","p":"phrase","c":"C1","vi":"cơ quan chuyên trách","single":false},{"n":231,"w":"private economic sector","p":"phrase","c":"C1","vi":"khu vực kinh tế tư nhân","single":false},{"n":232,"w":"transport corridor","p":"phrase","c":"B2","vi":"hành lang giao thông","single":false},{"n":233,"w":"corridor","p":"n","c":"B2","vi":"hành lang","single":true},{"n":234,"w":"metropolitan centre","p":"phrase","c":"C1","vi":"trung tâm đô thị lớn","single":false},{"n":235,"w":"outlying region","p":"phrase","c":"C1","vi":"vùng xa trung tâm","single":false},{"n":236,"w":"recreational area","p":"phrase","c":"B2","vi":"khu vui chơi giải trí","single":false},{"n":237,"w":"population distribution","p":"phrase","c":"C1","vi":"sự phân bố dân cư","single":false},{"n":238,"w":"grow more inclusively","p":"phrase","c":"C1","vi":"phát triển bao trùm hơn","single":false},{"n":239,"w":"inclusively","p":"adv","c":"C1","vi":"một cách bao trùm","single":true},{"n":240,"w":"vicious cycle","p":"phrase","c":"C1","vi":"vòng luẩn quẩn","single":false},{"n":241,"w":"vicious","p":"adj","c":"C1","vi":"luẩn quẩn","single":true},{"n":242,"w":"economic strain","p":"phrase","c":"B2","vi":"áp lực kinh tế","single":false},{"n":243,"w":"strain","p":"n","c":"B2","vi":"sức ép, sự căng thẳng","single":true},{"n":244,"w":"housing subsidies","p":"phrase","c":"C1","vi":"trợ cấp nhà ở","single":false},{"n":245,"w":"demographic pressure","p":"phrase","c":"C1","vi":"áp lực dân số","single":false},{"n":246,"w":"demographic","p":"adj","c":"C1","vi":"thuộc nhân khẩu học","single":true},{"n":247,"w":"socio-economic","p":"adj","c":"C1","vi":"thuộc kinh tế – xã hội","single":true},{"n":248,"w":"diversified","p":"adj","c":"C1","vi":"đa dạng hóa","single":true},{"n":249,"w":"municipality","p":"n","c":"C1","vi":"thành phố/đô thị tự quản; chính quyền địa phương","single":true},{"n":250,"w":"uneven","p":"adj","c":"B2","vi":"không đồng đều, không bằng phẳng","single":true},{"n":251,"w":"flourish","p":"v","c":"C1","vi":"phát triển mạnh, thịnh vượng","single":true},{"n":252,"w":"inadequate","p":"adj","c":"B2","vi":"không đủ, không đạt yêu cầu","single":true},{"n":253,"w":"congested","p":"adj","c":"C1","vi":"tắc nghẽn, đông đúc","single":true},{"n":254,"w":"outskirts","p":"n","c":"B2","vi":"vùng ngoại ô, vùng ven","single":true},{"n":255,"w":"alarmingly","p":"adv","c":"C1","vi":"một cách đáng báo động","single":true},{"n":256,"w":"mismatch","p":"n","c":"C1","vi":"sự không tương thích, sự lệch nhau","single":true},{"n":257,"w":"comprehensive","p":"adj","c":"B2","vi":"toàn diện, bao quát","single":true},{"n":258,"w":"proceed","p":"v","c":"B2","vi":"tiến hành, tiếp tục","single":true},{"n":259,"w":"oversight","p":"n","c":"C1","vi":"sự giám sát; sự sơ suất","single":true},{"n":260,"w":"intensify","p":"v","c":"C1","vi":"tăng cường, làm mạnh thêm, trở nên dữ dội hơn","single":true},{"n":261,"w":"paradox","p":"n","c":"C1","vi":"nghịch lý","single":true},{"n":262,"w":"exacerbate","p":"v","c":"C1","vi":"làm trầm trọng thêm","single":true},{"n":263,"w":"proliferate","p":"v","c":"C1","vi":"tăng nhanh, sinh sôi nảy nở","single":true},{"n":264,"w":"impair","p":"v","c":"C1","vi":"làm suy yếu, làm hư hại","single":true},{"n":265,"w":"magnify","p":"v","c":"C1","vi":"phóng đại, khuếch đại, làm trầm trọng hơn","single":true},{"n":266,"w":"inhibit","p":"v","c":"C1","vi":"kìm hãm, ngăn cản","single":true},{"n":267,"w":"filtration","p":"n","c":"C1","vi":"sự lọc","single":true},{"n":268,"w":"heat-island","p":"n","c":"C1","vi":"đảo nhiệt (đô thị)","single":true},{"n":269,"w":"empower","p":"v","c":"C1","vi":"trao quyền, tạo điều kiện","single":true},{"n":270,"w":"equitably","p":"adv","c":"C2","vi":"một cách công bằng","single":true},{"n":271,"w":"consult","p":"v","c":"B2","vi":"tham khảo ý kiến, hỏi ý kiến","single":true},{"n":272,"w":"longevity","p":"n","c":"C1","vi":"tuổi thọ, độ bền lâu","single":true},{"n":273,"w":"consultant","p":"n","c":"B2","vi":"chuyên gia tư vấn","single":true},{"n":274,"w":"elevate","p":"v","c":"C1","vi":"nâng cao, nâng lên","single":true},{"n":275,"w":"intense","p":"adj","c":"B2","vi":"mãnh liệt, dữ dội, gay gắt","single":true},{"n":276,"w":"robust","p":"adj","c":"C1","vi":"vững chắc, mạnh mẽ","single":true},{"n":277,"w":"engine of growth","p":"phrase","c":"B2","vi":"động lực tăng trưởng","single":false},{"n":278,"w":"inclusive prosperity","p":"phrase","c":"C1","vi":"sự thịnh vượng bao trùm","single":false},{"n":279,"w":"inclusive","p":"adj","c":"B2","vi":"bao trùm, bao gồm tất cả","single":true},{"n":280,"w":"prosperity","p":"n","c":"B2","vi":"sự thịnh vượng","single":true},{"n":281,"w":"competent governance","p":"phrase","c":"C1","vi":"quản trị có năng lực","single":false},{"n":282,"w":"competent","p":"adj","c":"C1","vi":"có năng lực, thành thạo","single":true},{"n":283,"w":"governance","p":"n","c":"C1","vi":"sự quản trị, sự cai quản","single":true},{"n":284,"w":"single industrial sector","p":"phrase","c":"B2","vi":"một ngành công nghiệp duy nhất","single":false},{"n":285,"w":"sector","p":"n","c":"B2","vi":"khu vực, ngành","single":true},{"n":286,"w":"stark regional disparity","p":"phrase","c":"C1","vi":"sự chênh lệch vùng miền rõ rệt","single":false},{"n":287,"w":"stark","p":"adj","c":"C1","vi":"rõ rệt, trần trụi, khắc nghiệt","single":true},{"n":288,"w":"place strain on","p":"phrase","c":"B2","vi":"gây áp lực lên, làm quá tải","single":false},{"n":289,"w":"tremendous potential","p":"phrase","c":"B2","vi":"tiềm năng to lớn","single":false},{"n":290,"w":"tremendous","p":"adj","c":"B2","vi":"to lớn, kinh khủng","single":true},{"n":291,"w":"urban periphery","p":"phrase","c":"C1","vi":"vùng ven đô","single":false},{"n":292,"w":"administrative management","p":"phrase","c":"C1","vi":"quản lý hành chính","single":false},{"n":293,"w":"urban territory","p":"phrase","c":"B2","vi":"lãnh thổ/khu vực đô thị","single":false},{"n":294,"w":"territory","p":"n","c":"B2","vi":"lãnh thổ, vùng đất","single":true},{"n":295,"w":"regulatory intervention","p":"phrase","c":"C1","vi":"sự can thiệp mang tính quản lý/điều tiết","single":false},{"n":296,"w":"coordinated governance mechanism","p":"phrase","c":"C1","vi":"cơ chế quản trị phối hợp","single":false},{"n":297,"w":"dense metropolitan region","p":"phrase","c":"C1","vi":"khu vực đô thị có mật độ cao","single":false},{"n":298,"w":"metropolitan","p":"adj","c":"C1","vi":"thuộc đô thị lớn","single":true},{"n":299,"w":"high population density","p":"phrase","c":"B2","vi":"mật độ dân số cao","single":false},{"n":300,"w":"density","p":"n","c":"C1","vi":"mật độ","single":true},{"n":301,"w":"elevated level","p":"phrase","c":"B2","vi":"mức cao hơn bình thường","single":false},{"n":302,"w":"elevated","p":"adj","c":"C1","vi":"cao hơn, được nâng lên","single":true},{"n":303,"w":"airborne pollutant","p":"phrase","c":"C1","vi":"chất ô nhiễm trong không khí","single":false},{"n":304,"w":"airborne","p":"adj","c":"C1","vi":"trong không khí, bay trong không khí","single":true},{"n":305,"w":"health hazard","p":"phrase","c":"B2","vi":"mối nguy hại sức khỏe","single":false},{"n":306,"w":"hazard","p":"n","c":"C1","vi":"mối nguy hiểm","single":true},{"n":307,"w":"undermine urban livability","p":"phrase","c":"C1","vi":"làm suy giảm chất lượng sống đô thị","single":false},{"n":308,"w":"livability","p":"n","c":"C1","vi":"mức độ đáng sống","single":true},{"n":309,"w":"impermeable surface","p":"phrase","c":"C1","vi":"bề mặt không thấm nước","single":false},{"n":310,"w":"impermeable","p":"adj","c":"C2","vi":"không thấm","single":true},{"n":311,"w":"air purification","p":"phrase","c":"B2","vi":"sự lọc sạch không khí","single":false},{"n":312,"w":"purification","p":"n","c":"C1","vi":"sự thanh lọc","single":true},{"n":313,"w":"public-private partnership","p":"phrase","c":"C1","vi":"quan hệ đối tác công – tư","single":false},{"n":314,"w":"partnership","p":"n","c":"B2","vi":"quan hệ đối tác","single":true},{"n":315,"w":"pedestrian flow","p":"phrase","c":"B2","vi":"dòng người đi bộ","single":false},{"n":316,"w":"public accessibility","p":"phrase","c":"C1","vi":"khả năng tiếp cận của cộng đồng","single":false},{"n":317,"w":"customized framework","p":"phrase","c":"C1","vi":"khung/mô hình được tùy chỉnh riêng, thiết kế riêng","single":false},{"n":318,"w":"customized","p":"adj","c":"C1","vi":"được tùy chỉnh","single":true},{"n":319,"w":"operational expenditure","p":"phrase","c":"C1","vi":"chi phí vận hành","single":false},{"n":320,"w":"long-term asset value","p":"phrase","c":"C1","vi":"giá trị tài sản dài hạn","single":false},{"n":321,"w":"asset","p":"n","c":"B2","vi":"tài sản; lợi thế","single":true},{"n":322,"w":"smart-grid application","p":"phrase","c":"C1","vi":"ứng dụng lưới điện thông minh","single":false},{"n":323,"w":"smart-grid","p":"n","c":"C1","vi":"lưới điện thông minh","single":true},{"n":324,"w":"immense economic potential","p":"phrase","c":"C1","vi":"tiềm năng kinh tế to lớn","single":false},{"n":325,"w":"immense","p":"adj","c":"B2","vi":"bao la, to lớn","single":true},{"n":326,"w":"profound systemic friction","p":"phrase","c":"C1","vi":"sự xung đột/ma sát sâu sắc mang tính hệ thống","single":false},{"n":327,"w":"profound","p":"adj","c":"B2","vi":"sâu sắc","single":true},{"n":328,"w":"friction","p":"n","c":"C1","vi":"ma sát; xung đột","single":true},{"n":329,"w":"utility deficit","p":"phrase","c":"C1","vi":"sự thiếu hụt dịch vụ tiện ích (điện, nước,...)","single":false},{"n":330,"w":"utility","p":"n","c":"C1","vi":"tiện ích, dịch vụ công ích","single":true},{"n":331,"w":"deficit","p":"n","c":"C1","vi":"sự thiếu hụt, thâm hụt","single":true},{"n":332,"w":"recreational green space","p":"phrase","c":"B2","vi":"không gian xanh dành cho giải trí","single":false},{"n":333,"w":"recreational","p":"adj","c":"C1","vi":"thuộc giải trí","single":true},{"n":334,"w":"unreliable transit line","p":"phrase","c":"C1","vi":"tuyến giao thông công cộng không đáng tin cậy","single":false},{"n":335,"w":"line","p":"n","c":"A1","vi":"tuyến, đường","single":true},{"n":336,"w":"strategic foresight","p":"phrase","c":"C1","vi":"tầm nhìn chiến lược","single":false},{"n":337,"w":"foresight","p":"n","c":"C1","vi":"tầm nhìn xa","single":true},{"n":338,"w":"short-sighted administrative policy","p":"phrase","c":"C1","vi":"chính sách hành chính thiển cận","single":false},{"n":339,"w":"short-sighted","p":"adj","c":"C1","vi":"thiển cận","single":true}];
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const key=w=>w.w.toLowerCase();
+const byN={};V.forEach(v=>byN[v.n]=v);
+const MAXN=V.length;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const POS={n:'danh từ',v:'động từ',adj:'tính từ',adv:'trạng từ',phrase:'cụm từ'};
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function fmt(s){s=Math.max(0,Math.round(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function fmtPt(x){return (Math.round(x*100)/100).toString().replace('.',',')}
+
+/* ---------- settings & groups ---------- */
+const DEFAULT_GROUPS=[{cnt:4,from:1,to:205,single:false},{cnt:8,from:206,to:246,single:true},{cnt:3,from:247,to:339,single:false}];
+let G=store.get('vt_groups',null)||JSON.parse(JSON.stringify(DEFAULT_GROUPS));
+let sets=store.get('vt_sets',[]);
+let current=sets.length?sets[sets.length-1]:null;
+function loadSettings(){
+ const st=store.get('vt_settings',{});
+ $('timeMin').value=st.timeMin||10;$('wrongMax').value=st.wrongMax??5;$('timeOn').checked=!!st.timeOn;$('wrongOn').checked=!!st.wrongOn;
+}
+function saveSettings(){store.set('vt_settings',{timeMin:$('timeMin').value,wrongMax:$('wrongMax').value,timeOn:$('timeOn').checked,wrongOn:$('wrongOn').checked})}
+['timeMin','wrongMax','timeOn','wrongOn'].forEach(id=>$(id).addEventListener('change',()=>{saveSettings();renderSet()}));
+$('name').value=store.get('vt_name','');
+
+function poolOf(g){const a=Math.max(1,Math.min(g.from,g.to)),b=Math.min(MAXN,Math.max(g.from,g.to));return V.filter(v=>v.n>=a&&v.n<=b&&(!g.single||v.single))}
+function renderGroups(){
+ const tb=$('gBody');tb.innerHTML='';
+ G.forEach((g,i)=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td>Nhóm ${i+1}<span class="avail"></span></td><td><input type="number" min="0" data-f="cnt" value="${g.cnt}"></td><td><input type="number" min="1" max="${MAXN}" data-f="from" value="${g.from}"></td><td><input type="number" min="1" max="${MAXN}" data-f="to" value="${g.to}"></td><td><input type="checkbox" data-f="single" ${g.single?'checked':''}></td><td>${G.length>1?'<button class="x" title="Xoá nhóm">×</button>':''}</td>`;
+  tr.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{
+   const f=inp.dataset.f;g[f]=f==='single'?inp.checked:Math.max(f==='cnt'?0:1,Math.min(f==='cnt'?99:MAXN,parseInt(inp.value)||0));
+   store.set('vt_groups',G);renderGroups();renderSet();
+  }));
+  const x=tr.querySelector('.x');if(x)x.onclick=()=>{G.splice(i,1);store.set('vt_groups',G);renderGroups();renderSet()};
+  tb.appendChild(tr);
+ });
+ validate();
+}
+function validate(){
+ let tot=0,err='';
+ G.forEach((g,i)=>{const n=poolOf(g).length;tot+=g.cnt;
+  $('gBody').children[i].querySelector('.avail').textContent=`có ${n} từ`;
+  if(g.cnt>n)err=`Nhóm ${i+1} chỉ có ${n} từ, không đủ ${g.cnt} câu.`});
+ if(tot<1)err='Cần ít nhất 1 câu.';
+ $('gTotal').innerHTML=`Tổng: <b>${tot}</b> câu · mỗi câu ${tot?fmtPt(10/tot):0} điểm (thang 10)`;
+ $('grpErr').textContent=err;return {tot,err};
+}
+$('addG').onclick=()=>{G.push({cnt:2,from:1,to:MAXN,single:false});store.set('vt_groups',G);renderGroups();renderSet()};
+
+function sameConfig(s){return s&&JSON.stringify(s.cfg)===JSON.stringify(G)}
+function genSet(){
+ const {err}=validate();if(err){toast(err);return false}
+ const prev=sets.slice(-2).map(s=>new Set(s.ns.map(n=>key(byN[n]))));
+ const ov=prev.map(()=>0);const chosen=[];const used=new Set();
+ for(const g of G){
+  const cand=shuffle(poolOf(g)).sort((a,b)=>prev.filter(p=>p.has(key(a))).length-prev.filter(p=>p.has(key(b))).length);
+  let c=0;
+  for(const w of cand){
+   if(c>=g.cnt)break;const k=key(w);if(used.has(k))continue;
+   const hits=prev.map(p=>p.has(k));if(hits.some((h,i)=>h&&ov[i]>=2))continue;
+   hits.forEach((h,i)=>{if(h)ov[i]++});used.add(k);chosen.push(w.n);c++;
+  }
+  if(c<g.cnt){ // pool too small to respect overlap: fill anyway
+   for(const w of cand){if(c>=g.cnt)break;const k=key(w);if(used.has(k))continue;prev.forEach((p,i)=>{if(p.has(k))ov[i]++});used.add(k);chosen.push(w.n);c++}
+  }
+ }
+ const id=(sets.length?Math.max(...sets.map(s=>s.id)):0)+1;
+ const s={id,ns:chosen,ov,cfg:JSON.parse(JSON.stringify(G))};
+ sets.push(s);sets=sets.slice(-10);store.set('vt_sets',sets);current=s;renderSet();return true;
+}
+function renderSet(){
+ if(!current){$('setInfo').innerHTML='Chưa có bộ đề. Bấm <b>Tạo set test mới</b> hoặc <b>Bắt đầu</b> để tạo tự động.';return}
+ const n=current.ns.length;
+ let t=`Bộ đề <b>#${current.id}</b> · <b>${n}</b> câu.`;
+ if(current.ov&&current.ov.length)t+=`<br>Số từ trùng với ${current.ov.length} đề trước: `+current.ov.map(o=>`<b>${o}</b>`).join(' và ')+' (tối đa 2).';
+ if(!sameConfig(current))t+=`<br><span style="color:var(--red2)">Số câu / phạm vi từ đã thay đổi — bộ đề mới sẽ được tạo khi bấm Bắt đầu.</span>`;
+ const lim=[];if($('timeOn').checked)lim.push(`${$('timeMin').value} phút`);if($('wrongOn').checked)lim.push(`sai tối đa ${$('wrongMax').value} câu`);
+ t+='<br>Giới hạn: '+(lim.length?lim.join(' · '):'không');
+ $('setInfo').innerHTML=t;
+}
+$('newSet').onclick=()=>{if(genSet())toast('Đã tạo bộ đề #'+current.id)};
+
+/* ---------- quiz ---------- */
+function distractors(w){
+ const k=key(w),vik=w.vi.toLowerCase();
+ const ok=v=>key(v)!==k&&v.vi.toLowerCase()!==vik&&!vik.includes(v.vi.toLowerCase())&&!v.vi.toLowerCase().includes(vik);
+ const tiers=[V.filter(v=>ok(v)&&v.p===w.p&&v.single===w.single),V.filter(v=>ok(v)&&v.single===w.single),V.filter(ok)];
+ const out=[],seen=new Set([k]);
+ for(const t of tiers)for(const v of shuffle(t)){if(out.length>=2)break;if(seen.has(key(v)))continue;seen.add(key(v));out.push(v)}
+ return out;
+}
+let S=null,timer=null;
+$('go').onclick=()=>{
+ const name=$('name').value.trim();
+ if(!name){$('nameErr').textContent='Vui lòng nhập họ tên học sinh.';$('name').focus();return}
+ $('nameErr').textContent='';store.set('vt_name',name);
+ if(!current||!sameConfig(current)){if(!genSet())return}
+ start(name,current);
+};
+function start(name,set){
+ const qs=shuffle(set.ns).map(n=>{const w=byN[n];return{w,opts:shuffle([w,...distractors(w)]),pick:null}});
+ S={name,set,qs,i:0,wrong:0,t0:Date.now(),limit:$('timeOn').checked?(+$('timeMin').value||10)*60:0,wmax:$('wrongOn').checked?(+$('wrongMax').value||0):null,done:false,lock:false};
+ $('qName').textContent=name;$('qSet').textContent='#'+set.id;
+ $('timeK').textContent=S.limit?'Còn lại':'Thời gian';
+ $('wrongStat').querySelector('.k').textContent=S.wmax!=null?`Sai (tối đa ${S.wmax})`:'Số câu sai';
+ show('quiz');renderQ();tick();clearInterval(timer);timer=setInterval(tick,250);
+}
+function elapsed(){return (Date.now()-S.t0)/1000}
+function tick(){
+ if(!S||S.done)return;const e=elapsed();
+ if(S.limit){const r=S.limit-e;$('qTime').textContent=fmt(r);$('timeStat').classList.toggle('warn',r<=30);if(r<=0)finish('time')}
+ else $('qTime').textContent=fmt(e);
+}
+function renderQ(){
+ const q=S.qs[S.i],n=S.qs.length;
+ $('qPos').textContent=`${S.i+1}/${n}`;$('qBar').style.width=(S.i/n*100)+'%';
+ $('qNum').textContent=`CÂU ${S.i+1}`;$('qVi').textContent=q.w.vi;
+ $('qPosTag').textContent=POS[q.w.p]||'';$('qPosTag').classList.toggle('hidden',!q.w.p);
+ $('qWrong').textContent=S.wrong;$('wrongStat').classList.toggle('warn',S.wmax!=null&&S.wrong>=S.wmax);
+ const box=$('opts');box.innerHTML='';
+ q.opts.forEach((o,j)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<span class="l">${'ABC'[j]}</span><span></span>`;b.lastChild.textContent=o.w;b.onclick=()=>answer(j,b);box.appendChild(b)});
+ S.lock=false;
+}
+function showFace(ok){const f=$(ok?'faceOk':'faceNo');['faceOk','faceNo'].forEach(i=>$(i).classList.remove('show'));void f.offsetWidth;f.classList.add('show')}
+function answer(j,b){
+ if(S.lock||S.done)return;S.lock=true;
+ const q=S.qs[S.i];q.pick=q.opts[j];const right=q.pick===q.w;
+ document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+ b.classList.add('sel');if(!right)S.wrong++;showFace(right);
+ $('qWrong').textContent=S.wrong;
+ setTimeout(()=>{
+  if(S.done)return;
+  if(S.wmax!=null&&S.wrong>S.wmax)return finish('wrong');
+  S.i++;if(S.i>=S.qs.length)finish('ok');else renderQ();
+ },1000);
+}
+$('quit').onclick=()=>$('confirmBox').classList.remove('hidden');
+$('cNo').onclick=()=>$('confirmBox').classList.add('hidden');
+$('cYes').onclick=()=>{$('confirmBox').classList.add('hidden');finish('quit')};
+const WHY={ok:'Hoàn thành',time:'Hết giờ',wrong:'Sai quá giới hạn',quit:'Nộp sớm'};
+
+function finish(why){
+ if(S.done)return;S.done=true;clearInterval(timer);
+ const e=Math.min(elapsed(),S.limit||Infinity);const n=S.qs.length;
+ const right=S.qs.filter(q=>q.pick===q.w).length;const wrong=n-right;
+ const score=Math.round(right*10/n*100)/100;
+ $('rScore').innerHTML=fmtPt(score)+'<small>/10</small>';
+ $('rWhy').textContent={ok:'Đã hoàn thành tất cả các câu',time:'Hết thời gian — bài đã tự nộp',wrong:`Sai quá ${S.wmax} câu — bài dừng`,quit:'Nộp bài sớm'}[why]+(wrong>S.wrong?` · ${wrong-S.wrong} câu chưa làm tính là sai`:'');
+ $('rName').textContent=S.name;$('rTime').textContent=fmt(e);$('rWrong').textContent=wrong+'/'+n;$('rRight').textContent=right+'/'+n;$('rSet').textContent='#'+S.set.id;
+ const ul=$('rList');ul.innerHTML='';
+ S.qs.forEach(q=>{const li=document.createElement('li');const st=q.pick==null?'s':(q.pick===q.w?'y':'n');
+  li.innerHTML=`<span class="mk ${st}">${st==='y'?'✓':st==='n'?'✗':'–'}</span><div><div><span class="w"></span> <span class="m"></span></div><div class="m x2"></div></div>`;
+  li.querySelector('.w').textContent=q.w.w;li.querySelector('.m').textContent=`(${q.w.p||''}${q.w.c?' · '+q.w.c:''}) — ${q.w.vi}`;
+  li.querySelector('.x2').textContent=st==='n'?`Em chọn: ${q.pick.w}`:st==='s'?'Chưa làm':'';ul.appendChild(li)});
+ const rec={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name:S.name,set:S.set.id,score,right,wrong,n,sec:Math.round(e),why,at:new Date().toISOString(),
+  wrongWords:S.qs.filter(q=>q.pick!==q.w).map(q=>q.w.w),synced:false};
+ const h=store.get('vt_hist',[]);h.unshift(rec);store.set('vt_hist',h.slice(0,500));
+ $('rSync').textContent='';syncResult(rec);
+ show('result');
+}
+$('again').onclick=()=>start(S.name,S.set);
+$('home').onclick=()=>{show('start');renderSet()};
+function show(id){['start','quiz','result','summary'].forEach(s=>$(s).classList.toggle('hidden',s!==id));window.scrollTo(0,0)}
+
+/* ---------- shared results (db) ---------- */
+let DB=null,USER=null,UID=null,CAN_EDIT=false;
+(async()=>{
+ try{if(!window.claude||!claude.use)return;
+  [DB,USER]=await Promise.all([claude.use('db'),claude.use('user')]);
+  if(USER){UID=await USER.id();CAN_EDIT=!!(await USER.canEdit())}
+  if(!UID)DB=null;
+  $('rsDbWrap').classList.toggle('hidden',!(DB&&CAN_EDIT));
+  if(DB){const pend=store.get('vt_hist',[]).filter(r=>!r.synced);if(pend.length)pushMine()}
+ }catch(e){DB=null}
+})();
+let pushing=false,again=false;
+async function pushMine(){
+ if(!DB||!UID)return false;
+ if(pushing){again=true;return true}pushing=true;
+ try{
+  const ref=DB.doc('results/'+UID);const snap=await ref.get();
+  const have=snap.exists&&Array.isArray(snap.data().items)?snap.data().items:[];
+  const ids=new Set(have.map(r=>r.id));
+  const loc=store.get('vt_hist',[]);
+  const add=loc.filter(r=>!ids.has(r.id)).map(({synced,...r})=>r);
+  if(add.length){await ref.set({items:have.concat(add).slice(-800),updated:new Date().toISOString()})}
+  const all=new Set([...ids,...add.map(r=>r.id)]);
+  store.set('vt_hist',store.get('vt_hist',[]).map(r=>all.has(r.id)?{...r,synced:true}:r));
+  pushing=false;if(again){again=false;return pushMine()}return true;
+ }catch(e){pushing=false;return false}
+}
+async function syncResult(rec){
+ if(!DB){$('rSync').textContent='Kết quả đã lưu trên máy này.';return}
+ $('rSync').textContent='Đang gửi kết quả lên bảng tổng hợp…';
+ const ok=await pushMine();
+ $('rSync').textContent=ok?'Kết quả đã được gửi lên bảng tổng hợp của giáo viên.':'Chưa gửi được lên bảng tổng hợp — kết quả vẫn lưu trên máy này và sẽ gửi lại lần sau.';
+}
+
+/* ---------- summary ---------- */
+let SUM=[];
+$('openSum').onclick=openSummary;
+$('sumBack').onclick=()=>{show('start');renderSet()};
+async function openSummary(){
+ show('summary');$('sumInfo').textContent='Đang tải…';$('sumTbl').innerHTML='';
+ const map=new Map();store.get('vt_hist',[]).forEach(r=>map.set(r.id,r));
+ let src='trên máy này';
+ if(DB){
+  try{
+   const t=new Promise((_,rej)=>setTimeout(()=>rej('timeout'),10000));
+   const q=await Promise.race([DB.collection('results').get(),t]);
+   q.docs.forEach(d=>{const it=d.data()?.items;if(Array.isArray(it))it.forEach(r=>{if(r&&r.id)map.set(r.id,r)})});
+   src=CAN_EDIT?'từ tất cả các máy làm bài':'của tài khoản này và trên máy này';
+  }catch(e){src='trên máy này (chưa tải được dữ liệu chung)'}
+ }
+ SUM=[...map.values()].sort((a,b)=>String(b.at).localeCompare(String(a.at)));
+ const names=new Set(SUM.map(r=>String(r.name).trim().toLowerCase()));
+ $('sumInfo').innerHTML=SUM.length?`<b>${SUM.length}</b> lượt làm bài · <b>${names.size}</b> học sinh · dữ liệu ${src}.`:'Chưa có kết quả nào.';
+ renderSum();
+ $('sumNote').textContent=DB?'':'Kết quả chỉ được tổng hợp trên thiết bị này. Học sinh làm trên máy khác sẽ không xuất hiện ở đây.';
+}
+function dt(iso){const d=new Date(iso);return isNaN(d)?'':d.toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+const COLS=['STT','Họ và tên','Bộ đề','Điểm','Số câu đúng','Số câu sai','Thời gian làm bài','Kết thúc','Ngày giờ','Từ làm sai'];
+function rowsOf(){return SUM.map((r,i)=>[i+1,r.name,'#'+r.set,fmtPt(r.score),`${r.right}/${r.n}`,`${r.wrong}/${r.n}`,fmt(r.sec),WHY[r.why]||'',dt(r.at),(r.wrongWords||[]).join(', ')])}
+function renderSum(){
+ if(!SUM.length){$('sumTbl').innerHTML='';return}
+ $('sumTbl').innerHTML='<table><tr>'+COLS.map(c=>`<th>${c}</th>`).join('')+'</tr>'+rowsOf().map(r=>'<tr>'+r.map((c,j)=>`<td class="${[0,2,3,4,5,6].includes(j)?'num':''}">${j===3?'<b>'+esc(c)+'</b>':esc(c)}</td>`).join('')+'</tr>').join('')+'</table>';
+}
+function csv(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"';return '﻿'+[COLS,...rowsOf()].map(r=>r.map(q).join(',')).join('\r\n')}
+$('dlCsv').onclick=async()=>{
+ if(!SUM.length)return toast('Chưa có kết quả để tải.');
+ const name='Tong_hop_ket_qua_'+new Date().toISOString().slice(0,10)+'.csv';
+ try{const d=window.claude&&window.claude.use&&await claude.use('downloads');if(d){await d.save({filename:name,data:csv()});return}}catch(e){}
+ try{const u=URL.createObjectURL(new Blob([csv()],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}catch(e){copyTbl(true)}
+};
+async function copyTbl(fallback){
+ const tsv=[COLS,...rowsOf()].map(r=>r.join('\t')).join('\n');
+ try{await navigator.clipboard.writeText(tsv);toast(fallback?'Không tải được file — đã sao chép bảng, dán vào Excel.':'Đã sao chép — dán vào Excel/Google Sheets.')}catch(e){toast('Trình duyệt không cho sao chép.')}
+}
+$('cpTbl').onclick=()=>{if(!SUM.length)return toast('Chưa có kết quả.');copyTbl(false)};
+
+/* ---------- reset ---------- */
+$('openReset').onclick=()=>$('resetBox').classList.remove('hidden');
+$('rsNo').onclick=()=>$('resetBox').classList.add('hidden');
+$('rsYes').onclick=async()=>{
+ if($('rsSettings').checked){G=JSON.parse(JSON.stringify(DEFAULT_GROUPS));store.del('vt_groups');store.del('vt_settings');loadSettings();renderGroups()}
+ if($('rsSets').checked){sets=[];current=null;store.del('vt_sets')}
+ if($('rsLocal').checked){store.del('vt_hist');store.del('vt_name');$('name').value=''}
+ if($('rsDb').checked&&DB&&CAN_EDIT){
+  try{const q=await DB.collection('results').get();for(const d of q.docs){await DB.doc('results/'+d.id).delete()}toast('Đã xoá kết quả tổng hợp.')}catch(e){toast('Chưa xoá được kết quả tổng hợp.')}
+ }
+ $('rsDb').checked=false;$('resetBox').classList.add('hidden');renderSet();toast('Đã khởi tạo mới.');
+};
+
+loadSettings();renderGroups();renderSet();
+</script>
+</body>
+</html>
